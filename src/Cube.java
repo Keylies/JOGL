@@ -1,16 +1,23 @@
+import java.io.File;
+import java.io.IOException;
+
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 
 public class Cube implements Object3D {
 	
-	private float x, y, z, l; // Position et taille (taille : l)
+	private float x, y, z, l; // Position et taille
 	private float tx, ty, tz; // Angle
 	private float speedx = 0;
 	private float speedy = 0;
 	private float speedz = 0;
+	private float orbx, orby, orbz;
+	private int texture;
 	
-	public Cube(float x, float y, float z, float l, float tx, float ty, float tz) {
+	public Cube(float x, float y, float z, float l, float tx, float ty, float tz, float ox, float oy, float oz, int t) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -18,68 +25,69 @@ public class Cube implements Object3D {
 		this.tx = tx;
 		this.ty = ty;
 		this.tz = tz;
+		orbx = ox;
+		orby = oy;
+		orbz = oz;
+		texture = t;
 	}
 	
 	public void render(GLAutoDrawable drawable) {
 		
 		GL2 gl = drawable.getGL().getGL2();
 		
-		gl.glLoadIdentity();
+
 		
 		gl.glPushMatrix();
 		
-		gl.glTranslatef(x, y, z);
-		
-		gl.glRotatef(speedx, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(speedy, 0.0f, 1.0f, 0.0f);
-		gl.glRotatef(speedz, 0.0f, 0.0f, 1.0f);
-		
-		gl.glBegin(gl.GL_QUADS);
+			gl.glTranslatef(x, y, z);
+			
+			gl.glRotatef(speedx, 1.0f, 0.0f, 0.0f);
+			gl.glRotatef(speedy, 0.0f, 1.0f, 0.0f);
+			gl.glRotatef(speedz, 0.0f, 0.0f, 1.0f);
+				
+			gl.glTranslatef(orbx, orby, orbz);
+			
+			gl.glBindTexture(gl.GL_TEXTURE_2D, texture);
+	
+			gl.glBegin(gl.GL_QUADS);
 
-			// FRONT
-			gl.glColor3f( 1.0f, 0.0f, 0.0f); //face rouge
-			gl.glVertex3f( -l, -l, -l);
-			gl.glVertex3f( l, -l, -l);
-			gl.glVertex3f( l, l, -l);
-			gl.glVertex3f( -l, l, -l);
-			
-			
-			// RIGHT
-			gl.glColor3f( 0.0f, 1.0f, 0.0f); //face verte
-			gl.glVertex3f( l, -l, -l);
-			gl.glVertex3f( l, -l, l);
-			gl.glVertex3f( l, l, l);
-			gl.glVertex3f( l, l, -l);
-			                                                                                                    
-			// BACK
-			gl.glColor3f( 1.0f, 0.0f, 0.0f); //face rouge
-			gl.glVertex3f( -l, -l, l);
-			gl.glVertex3f( l, -l, l);
-			gl.glVertex3f( l, l, l);
-			gl.glVertex3f( -l, l, l);
-			
-			// LEFT
-			gl.glColor3f( 0.0f, 1.0f, 0.0f); //face verte
-			gl.glVertex3f( -l, -l, l);
-			gl.glVertex3f( -l, -l, -l);
-			gl.glVertex3f( -l, l, -l);
-			gl.glVertex3f( -l, l, l);
-			
-			// TOP
-			gl.glColor3f( 0.0f, 0.0f, 1.0f); //face bleue
-			gl.glVertex3f( -l, l, -l);
-			gl.glVertex3f( l, l, -l);
-			gl.glVertex3f( l, l, l);
-			gl.glVertex3f( -l, l, l);
-			
-			// BOTTOM
-			gl.glColor3f( 0.0f, 0.0f, 1.0f); //face bleue
-			gl.glVertex3f( -l, -l, -l);
-			gl.glVertex3f( l, -l, -l);
-			gl.glVertex3f( l, -l, l);
-			gl.glVertex3f( -l, -l, l);
-
-		gl.glEnd();
+				// FRONT
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, -l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, -l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
+				
+				// RIGHT
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, -l);
+				                                                                                                    
+				// BACK
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, l);
+				
+				// LEFT
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, l);
+				
+				// TOP
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, -l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, l);
+				
+				// BOTTOM
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, l);
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
+	
+			gl.glEnd();
 		
 		gl.glPopMatrix();
 		
