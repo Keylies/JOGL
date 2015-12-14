@@ -41,12 +41,11 @@ public class Render3D implements GLEventListener {
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable drawable) {
-
-	}
+	public void dispose(GLAutoDrawable drawable) {}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
+		
 		GL2 gl = drawable.getGL().getGL2();
 		
 		gl.glShadeModel(gl.GL_LINE_SMOOTH);
@@ -54,9 +53,7 @@ public class Render3D implements GLEventListener {
 		gl.glEnable(gl.GL_DEPTH_TEST);
 		gl.glDepthFunc(gl.GL_LEQUAL);
 		gl.glHint(gl.GL_PERSPECTIVE_CORRECTION_HINT, gl.GL_NICEST);
-
 		gl.glMatrixMode(gl.GL_MODELVIEW);
-		
 		gl.glEnable(gl.GL_TEXTURE_2D);
 		
 		try {
@@ -75,9 +72,9 @@ public class Render3D implements GLEventListener {
 		texture2 = t2.getTextureObject(gl);
 		texture3 = t3.getTextureObject(gl);
 		
-		cube1 = new Cube(0.0f, 0.0f, -8.0f, 0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, texture1);
-		cube2 = new Cube(0.0f, 1.0f, -8.0f, 0.2f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, texture2);
-		cube3 = new Cube(0.0f, 0.0f, -8.0f, 0.2f, 0.0f, 0.0f, 0.5f, 2.0f, 0.0f, 0.0f, texture3);
+		cube1 = new Cube(0.0f, -0.5f, -8.0f, 0.6f, 0.0f, 1.5f, 0.0f, 0.0f, 0.0f, 0.0f, texture1);
+		cube2 = new Cube(0.0f, 1.2f, -8.0f, 0.45f, 1.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, texture2);
+		cube3 = new Cube(0.0f, 0.0f, -8.0f, 0.3f, 0.0f, 0.0f, 1.5f, 2.7f, 0.0f, 0.0f, texture3);
 		
 		objects.add(cube1);
 		objects.add(cube2);
@@ -86,25 +83,25 @@ public class Render3D implements GLEventListener {
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
+		
 		GL2 gl = drawable.getGL().getGL2();
 		
 		gl.glViewport(0, 0, w, h);
 		gl.glMatrixMode(gl.GL_PROJECTION);
 		gl.glLoadIdentity();
-		
 		GLU glu = new GLU();
-		glu.gluPerspective(45.0f, (float)w/(float)h, 0.1f, 100.0f);
+		glu.gluPerspective(45.0f, (float)w/h, 0.1f, 100.0f);
 		gl.glMatrixMode(gl.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
 	
 	private void update() {
+		
 		for ( Object3D object : objects)
 			object.update();
 	}
 	
 	private void render(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
 		
 		for ( Object3D object : objects)
 			object.render(drawable);

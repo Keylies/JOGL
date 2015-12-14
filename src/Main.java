@@ -21,8 +21,8 @@ public class Main {
         FPSAnimator anim = new FPSAnimator(canvas, 60);
         anim.start();
 
-        Frame frame = new Frame("AWT Window Test");
-        frame.setSize(300, 300);
+        Frame frame = new Frame("Cube World");
+        frame.setSize(600, 600);
         frame.add(canvas);
         frame.setVisible(true);
         

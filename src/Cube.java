@@ -9,8 +9,8 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class Cube implements Object3D {
 	
-	private float x, y, z, l; // Position et taille
-	private float tx, ty, tz; // Angle
+	private float x, y, z, l;
+	private float tx, ty, tz;
 	private float speedx = 0;
 	private float speedy = 0;
 	private float speedz = 0;
@@ -18,6 +18,7 @@ public class Cube implements Object3D {
 	private int texture;
 	
 	public Cube(float x, float y, float z, float l, float tx, float ty, float tz, float ox, float oy, float oz, int t) {
+		
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -34,8 +35,6 @@ public class Cube implements Object3D {
 	public void render(GLAutoDrawable drawable) {
 		
 		GL2 gl = drawable.getGL().getGL2();
-		
-
 		
 		gl.glPushMatrix();
 		
@@ -58,10 +57,10 @@ public class Cube implements Object3D {
 				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
 				
 				// RIGHT
-				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, -l);
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( l, -l, -l);
 				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, l);
 				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, l);
-				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, -l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( l, l, -l);
 				                                                                                                    
 				// BACK
 				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
@@ -71,21 +70,21 @@ public class Cube implements Object3D {
 				
 				// LEFT
 				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
-				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
-				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( -l, l, -l);
 				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, l);
 				
 				// TOP
-				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, -l);
-				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, -l);
+				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, l, -l);
+				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, l, -l);
 				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, l, l);
 				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, l, l);
 				
 				// BOTTOM
 				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, -l);
 				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, -l);
-				gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( l, -l, l);
-				gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( -l, -l, l);
+				gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( l, -l, l);
+				gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( -l, -l, l);
 	
 			gl.glEnd();
 		
@@ -95,6 +94,7 @@ public class Cube implements Object3D {
 
 	@Override
 	public void update() {
+		
 		speedx += tx;
 		speedy += ty;
 		speedz += tz;
